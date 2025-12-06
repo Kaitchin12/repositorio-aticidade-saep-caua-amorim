@@ -29,7 +29,7 @@ form.addEventListener('submit', async (event) => {
 
         if (response.ok) {
             
-            window.location.href = "index.html"; 
+            window.location.href = "home.html"; 
         } else {
             alert("Acesso negado: " + respostaTexto);
             document.getElementById('password').value = ""; // Limpa a senha

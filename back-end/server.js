@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "cimatec",
+    password: "Amorim#2210",
     database: "saep_db_new"
 });
 
