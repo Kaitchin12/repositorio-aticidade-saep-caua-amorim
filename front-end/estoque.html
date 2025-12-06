@@ -22,6 +22,9 @@
             <i class="fa-solid fa-screwdriver-wrench"></i> Estoque
         </a>
 
+        <a href="login.html" class="menu-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> logout
+        </a>
       
     </nav>
 
@@ -34,11 +37,46 @@
                     <i class="fa-solid fa-search" style="color: #95a5a6; margin-right: 10px;"></i>
                     <input type="text" placeholder="Buscar ferramenta..." class="search-input">
                 </div>
-                <button class="btn-add">
-                    <i class="fa-solid fa-plus"></i> Novo Item
-                </button>
+                <button  id="myBtn" class="btn-add"><i class="fa-solid fa-plus"></i> Novo Item</button>                
             </div>
 
+            <div id="myModal" class="modal">
+
+  <div class="modal-content">
+    
+    <div class="modal-header">
+      <h2>Novo Produto</h2>
+      <span class="close">&times;</span>
+    </div>
+
+    <div class="modal-body">
+      <form class="formulario-modal">
+        <div class="form-group">
+          <label for="nome">Nome do Produto</label>
+          <input class="input-nome-modal" type="text" id="nome" name="nome_prod" placeholder="Ex: Camiseta Preta">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="preco">Preço (R$)</label>
+            <input class="input-preco" type="number" id="preco" name="preco" step="0.01" placeholder="0,00">
+          </div>
+
+          <div class="form-group">
+            <label for="quantidade">Quantidade</label>
+            <input class="input-quantidade" type="number" id="quantidade" name="quantidade" placeholder="0">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">Salvar Produto</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+        
             <table>
                 <thead>
                     <tr>
@@ -63,5 +101,6 @@
         </div>
     </main>
 
+    <script src="js/appEstoque.js"></script>
 </body>
 </html>

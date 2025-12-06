@@ -85,20 +85,21 @@ app.post("/produtoCadastro", (req, res) => {
             return res.status(500).send("Erro ao salvar no banco.");
         }
 
-        res.send("Tarefa cadastrada com sucesso!");
+        res.send("produto cadastrada com sucesso!");
     });
 });
 
 
 
-app.get("/tasks", (res) => {
+
+app.get("/mostrarProduto", (res) => {
  
 
     const sql = `SELECT * FROM produto `;
 
     connection.query(sql, (err, results) => {
         if (err) {
-            console.error("Erro ao listar tarefas:", err.message);
+            console.error("Erro ao listar Produtos:", err.message);
             return res.status(500).send("Erro ao buscar dados.");
         }
 

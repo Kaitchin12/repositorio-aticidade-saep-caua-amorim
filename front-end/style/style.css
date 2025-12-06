@@ -253,3 +253,145 @@ tr:last-child td {
 .action-icon:hover {
     color: var(--primary-color);
 }
+
+/* Fundo do Modal (Overlay) */
+.modal {
+  display: none; /* Escondido por padrão */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+  backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
+  
+  /* Centralização Flexbox */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Caixa do Modal */
+.modal-content {
+  background-color: #ffffff;
+  margin: auto;
+  padding: 0; /* Padding removido aqui para gerenciar no header/body */
+  border-radius: 12px; /* Bordas arredondadas */
+  width: 90%;
+  max-width: 500px; /* Largura máxima elegante */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  position: relative;
+  
+  /* Animação de entrada */
+  animation: slideDown 0.4s ease;
+}
+
+/* Header do Modal */
+.modal-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Corpo do Modal */
+.modal-body {
+  padding: 25px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Botão Fechar (X) */
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.close:hover,
+.close:focus {
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilos do Formulário */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1; /* Divide o espaço igualmente */
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box; /* Garante que o padding não aumente a largura */
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #4a90e2; /* Cor de destaque ao clicar */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* Botão Salvar */
+.btn-save {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.btn-save:hover {
+  background-color: #218838;
+}
+
+/* Animação Keyframes */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
