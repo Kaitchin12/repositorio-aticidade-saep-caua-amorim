@@ -1,6 +1,6 @@
 // --- VARIÁVEIS DO MODAL (Mantido) ---
 var modal = document.getElementById("myModal");
-var btn = document.getElementById("myBtn"); // Botão que abre o modal
+var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
 if(btn) btn.onclick = function() { modal.style.display = "flex"; }
@@ -9,32 +9,26 @@ window.onclick = function(event) {
   if (event.target == modal) { modal.style.display = "none"; }
 }
 
-
 const formulario = document.querySelector(".formulario-modal");
-// Seleciona o TBODY de dentro da sua tabela específica
 const tbodyTabela = document.querySelector(".tabela-pagina-estoque tbody");
 
-
+// --- FUNÇÃO CARREGAR PRODUTOS (CORRIGIDA) ---
 async function carregarProdutos() {
     try {
         const response = await fetch('http://localhost:2005/mostrarProduto');
         const produtos = await response.json();
 
-        // 1. Limpa o tbody para não duplicar linhas
         tbodyTabela.innerHTML = "";
 
-        // 2. Percorre os produtos vindos do banco
         produtos.forEach(produto => {
             const tr = document.createElement("tr");
 
-         
             const caracteristicas = produto.caracteristicas || "-"; 
             const categoria = produto.categoria || "Geral";
-            const minimo = produto.estoque_minimo || 5; // Exemplo: mínimo padrão é 5
+            const minimo = produto.estoque_minimo || 5;
             
-           
             let statusTexto = "OK";
-            let statusCor = "green"; // Estilo visual (opcional)
+            let statusCor = "green"; 
             
             if (produto.quantidade <= minimo) {
                 statusTexto = "Baixo";
@@ -44,11 +38,18 @@ async function carregarProdutos() {
                 statusCor = "gray";
             }
 
-          
+            // ATENÇÃO AQUI EMBAIXO:
+            // Adicionei as aspas '' no nome_prod para não quebrar se tiver espaços
+            // E passei todos os parametros: id, nome, preco, quantidade
             tr.innerHTML = `
-                <td>${produto.nome_prod}</td>             <td>${caracteristicas}</td>               <td>${categoria}</td>                     <td>${produto.quantidade} un.</td>        <td>${minimo}</td>                        <td style="color: ${statusCor}; font-weight: bold;">
-                    ${statusTexto}                        </td>
-                <td>                                      <button class="btn-editar" onclick="editarProduto(${produto.id})">✏️</button>
+                <td>${produto.nome_prod}</td>
+                <td>${caracteristicas}</td>
+                <td>${categoria}</td>
+                <td>${produto.quantidade} un.</td>
+                <td>${minimo}</td>
+                <td style="color: ${statusCor}; font-weight: bold;">${statusTexto}</td>
+                <td>
+                    <button class="btn-editar" onclick="editarProduto(${produto.id}, '${produto.nome_prod}', ${produto.preco}, ${produto.quantidade})">✏️</button>
                     <button class="btn-excluir" onclick="excluirProduto(${produto.id})">🗑️</button>
                 </td>
             `;
@@ -61,20 +62,18 @@ async function carregarProdutos() {
     }
 }
 
-
+// --- CADASTRO (Mantido) ---
 formulario.addEventListener("submit", async (event) => {
     event.preventDefault(); 
 
-
     let nomeProd = document.querySelector(".input-nome-modal").value;
-    let precoProd = document.querySelector(".input-preco").value; // Se não usar na tabela, fica só no banco
+    let precoProd = document.querySelector(".input-preco").value; 
     let qtdProd = document.querySelector(".input-quantidade").value;
 
     const dadosProduto = {
         nome_prod: nomeProd, 
         preco: parseFloat(precoProd),
         quantidade: parseInt(qtdProd) 
-
     };
 
     try {
@@ -90,10 +89,7 @@ formulario.addEventListener("submit", async (event) => {
             alert("Sucesso: Produto cadastrado!"); 
             modal.style.display = "none";
             formulario.reset(); 
-            
-            
             carregarProdutos(); 
-            
         } else {
             alert("Erro do servidor: " + respostaTexto);
         }
@@ -104,42 +100,73 @@ formulario.addEventListener("submit", async (event) => {
     }
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
     carregarProdutos();
 });
 
+// --- FUNÇÃO EDITAR (CORRIGIDA E CONECTADA AO BOTÃO) ---
+async function editarProduto(id, nome_prod, preco, quantidade) {
+    
+    // Agora o prompt já vem preenchido com o valor atual (ex: "Coca Cola")
+    const novoTitulo = prompt("Digite o novo titulo", nome_prod);
+    
+    if (novoTitulo === null) return; // Cancelou
 
-async function editarProduto(nome_prod,preco,quantidade) {
-   const novoTitulo = prompt("didite o novo titulo" , nome_prod);
-   const novoPreco = parseFloat(prompt("digite o novo preco", preco));
-   const novaQuantidade = parseInt(prompt("nova quantidade",quantidade));
+    // Preenche os prompts de número com o valor atual
+    const novoPreco = parseFloat(prompt("Digite o novo preco", preco));
+    const novaQuantidade = parseInt(prompt("Nova quantidade", quantidade));
+
+    if (isNaN(novoPreco) || isNaN(novaQuantidade)) {
+        alert("Preço ou quantidade inválidos!");
+        return;
+    }
 
     try {
         const response = await fetch("http://localhost:2005/editarProduto", {
-             method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body : JSON.stringify({
-                nome_prod : novoTitulo,
-                preco : novoPreco,
-                quantidade : novaQuantidade
-              })
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: id,
+                nome_prod: novoTitulo,
+                preco: novoPreco,
+                quantidade: novaQuantidade
+            })
         });
-       if (!response.ok) throw new Error(await response.text());
-         alert("Tarefa editada!");
-         carregarProdutos(); // vamos atualizar a lista com isso 
+
+        if (!response.ok) throw new Error(await response.text());
+
+        alert("Produto editado com sucesso!");
+        carregarProdutos(); // Atualiza a tela automaticamente
 
     } catch (err) {
-        alert("erro ao editar a tarefa")
+        console.error(err);
+        alert("Erro ao editar o produto: " + err.message);
     }
 }
 
-function excluirProduto(id) {
-    if(confirm("Tem certeza que deseja excluir o ID " + id + "?")) {
-     
-        alert("Excluído (simulação)");
+async function excluirProduto(id) {
+    // 1. Pergunta de confirmação
+    if (confirm("Tem certeza que deseja excluir o ID " + id + "?")) {
+        
+        try {
+           
+            const response = await fetch(`/deletarProduto/${id}`, {
+                method: 'DELETE'
+            });
+
+          
+            if (response.ok) {
+                alert("Produto excluído com sucesso!");
+                
+                // Recarrega a página para atualizar a tabela
+                window.location.reload(); 
+            } else {
+                alert("Erro ao excluir no servidor.");
+            }
+
+        } catch (error) {
+            console.error("Erro de rede:", error);
+            alert("Não foi possível conectar ao servidor.");
+        }
     }
 }
-
-
-

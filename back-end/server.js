@@ -108,11 +108,11 @@ app.post("/produtoCadastro", (req, res) => {
     });
 
     app.put("/editarProduto", (req,res) => {
-          const { nome_prod, preco, quantidade } = req.body;
+          const {id, nome_prod, preco, quantidade } = req.body;
 
     const sql = "UPDATE produto SET nome_prod = ?, preco = ?, quantidade = ? WHERE id = ?";
 
-    connection.query(sql, [nome_prod, preco, quantidade], (err) => {
+    connection.query(sql,[ nome_prod, preco, quantidade,id], (err) => {
         if (err) {
             console.error("Erro ao editar tarefa:", err.message);
             return res.status(500).send("Erro ao salvar no banco.");
@@ -122,6 +122,23 @@ app.post("/produtoCadastro", (req, res) => {
     });
 
     })
+
+
+    app.delete("/deletarProduto/:id", (req, res) => {
+    const { id } = req.params;
+
+    const sql = "DELETE FROM produto WHERE id=?";
+
+    connection.query(sql, [id], (err) => {
+        if (err) {
+            console.error("Erro ao excluir:", err.message);
+            return res.status(500).send("Erro ao excluir.");
+        }
+
+        res.send("Tarefa excluída com sucesso.");
+    });
+});
+
 
 app.listen(2005, () =>
     console.log("Servidor rodando em http://localhost:2005/login.html")
