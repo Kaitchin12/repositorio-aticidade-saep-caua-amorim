@@ -383,6 +383,129 @@ input:focus {
   background-color: #218838;
 }
 
+
+/* --- ESTILOS GERAIS DA HOME --- */
+.top-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px;
+}
+
+/* Botão de Registrar Saída */
+.btn-action {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s;
+}
+
+.btn-action:hover {
+    background-color: #c0392b;
+}
+
+/* --- ESTILOS DO MODAL DE SAÍDA --- */
+
+/* Fundo escuro (Overlay) */
+.modal-overlay {
+    display: none; /* Oculto por padrão, o JS muda para flex */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Caixa branca do modal */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    max-width: 600px;
+    max-height: 80vh; /* Limita altura */
+    overflow-y: auto; /* Scroll se a lista for grande */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.close-saida {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-saida:hover { 
+    color: #000; 
+}
+
+/* --- ESTILOS DA LISTA DE PRODUTOS (DENTRO DO MODAL) --- */
+.lista-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.lista-item-row:last-child {
+    border-bottom: none;
+}
+
+.input-qtd-modal {
+    width: 70px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Botão Confirmar dentro do Modal */
+.btn-confirmar {
+    width: 100%;
+    padding: 12px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-confirmar:hover { 
+    background-color: #c0392b; 
+}
+
+/* Animação simples de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* Animação Keyframes */
 @keyframes slideDown {
   from {

@@ -1,4 +1,4 @@
-// --- VARIÁVEIS DO MODAL (Mantido) ---
+// --- VARIÁVEIS DO MODAL
 var modal = document.getElementById("myModal");
 var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
@@ -12,7 +12,7 @@ window.onclick = function(event) {
 const formulario = document.querySelector(".formulario-modal");
 const tbodyTabela = document.querySelector(".tabela-pagina-estoque tbody");
 
-// --- FUNÇÃO CARREGAR PRODUTOS (CORRIGIDA) ---
+// --- FUNÇÃO CARREGAR PRODUTOS 
 async function carregarProdutos() {
     try {
         const response = await fetch('http://localhost:2005/mostrarProduto');
@@ -60,7 +60,7 @@ async function carregarProdutos() {
     }
 }
 
-// --- CADASTRO (Mantido) ---
+// --- CADASTRO PRODUTO
 formulario.addEventListener("submit", async (event) => {
     event.preventDefault(); 
 

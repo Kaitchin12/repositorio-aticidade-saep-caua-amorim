@@ -140,6 +140,46 @@ app.post("/produtoCadastro", (req, res) => {
 });
 
 
+
+app.post('/movimentacao', (req, res) => {
+    // Verifica se o corpo é uma LISTA (Array) ou um objeto único
+    const dados = Array.isArray(req.body) ? req.body : [req.body];
+
+    // Vamos processar todos os itens da lista
+    const promessas = dados.map(item => {
+        return new Promise((resolve, reject) => {
+            // Se vier do modal de checkbox, as chaves podem ser diferentes, ajustamos aqui:
+            const id_produto = item.id_produto || item.id; 
+            const quantidade = item.quantidade;
+            const tipo = item.tipo || 'SAIDA'; // Se vier do modal, assumimos SAIDA
+            const observacao = item.observacao || 'Baixa em Massa';
+
+            // 1. Histórico
+            const sqlMov = "INSERT INTO movimentacao (id_produto, tipo, quantidade, observacao) VALUES (?, ?, ?, ?)";
+            connection.query(sqlMov, [id_produto, tipo, quantidade, observacao], (err) => {
+                if (err) return reject(err);
+
+                // 2. Atualiza Estoque
+                let sqlUpdate = "";
+                if (tipo === 'ENTRADA') sqlUpdate = "UPDATE produto SET quantidade = quantidade + ? WHERE id = ?";
+                else sqlUpdate = "UPDATE produto SET quantidade = quantidade - ? WHERE id = ?";
+
+                connection.query(sqlUpdate, [quantidade, id_produto], (errUpdate) => {
+                    if (errUpdate) return reject(errUpdate);
+                    resolve();
+                });
+            });
+        });
+    });
+
+    // Espera todos terminarem
+    Promise.all(promessas)
+        .then(() => res.status(200).send("Movimentações realizadas!"))
+        .catch((err) => res.status(500).send("Erro: " + err.message));
+});
+
+
+
 app.listen(2005, () =>
     console.log("Servidor rodando em http://localhost:2005/login.html")
 );
