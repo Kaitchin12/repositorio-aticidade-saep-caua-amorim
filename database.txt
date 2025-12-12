@@ -1,34 +1,36 @@
-create database saep_db_new;
-use saep_db_new;
 
-create table usuario (
-id int primary key auto_increment,
-nome varchar(100),
-email varchar(100),
-senha varchar(100)
+DROP DATABASE IF EXISTS saep_db_new;
+CREATE DATABASE saep_db_new;
+USE saep_db_new;
+
+CREATE TABLE usuario (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100) UNIQUE,    senha VARCHAR(100)
 );
 
 
-create table produto (
-id int auto_increment primary key,
-nome_prod varchar(100),
-quantidade int,
-material VARCHAR(50),                
-tamanho VARCHAR(50),                  
-tensao VARCHAR(20),                   
-estoque_minimo INT DEFAULT 5
+CREATE TABLE produto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_prod VARCHAR(100),
+    marca VARCHAR(100),    
+    modelo VARCHAR(100),   
+    quantidade INT,
+    material VARCHAR(50),                  
+    tamanho VARCHAR(50),                   
+    tensao VARCHAR(20),                    
+    estoque_minimo INT DEFAULT 5
 );
+
 
 CREATE TABLE movimentacao (
-    id int auto_increment primary key,
-    id_produto int,
-    tipo ENUM('ENTRADA', 'SAIDA') NOT NULL, 
-    quantidade int NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_produto INT,
+    nome_produto VARCHAR(100),     tipo ENUM('ENTRADA', 'SAIDA') NOT NULL, 
+    quantidade INT NOT NULL,
     data_movimentacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    observacao varchar(255), 
-    FOREIGN KEY (id_produto) REFERENCES produto(id)	
+    observacao VARCHAR(255), 
+    usuario VARCHAR(100),    
+    FOREIGN KEY (id_produto) REFERENCES produto(id) ON DELETE SET NULL
 );
 
-select * from usuario;	                                                                                
-select * from produto;	
-select * from movimentacao;	
